@@ -1,2 +1,24 @@
-# cicdonaws-example-projects
-An example implementation for a CI/CD pipeline implementedin different CI/CD tools like GithubActions, CodeCatalyst Workflows, CircleCI, Jenkins, Gitlab, ...
+# Implementing a CI/CD pipeline in different CI/CD systems
+As part of this project we are aiming to implement a simple, end to end CI/CD pipelines that contains all of the steps that follow "best practices".
+
+With the project, we want to be able to give Builders around the globe the possibility to understand the difference between certain CI/CD tools while at the same time following best practices.
+## Generic pipeline overview
+
+A generic pipeline for a simple service or microservice looks like this:
+![Generic CI/CD pipeline](docs/diagrams/generic_pipeline.png)
+This generic overview has three different deployment environments: development, pre-production and production.
+
+We assume "trunk based" development which means that developers will implement changes on feature & hotfix branches and this pipeline will be executed from the "main" branch where, on the "main" branch, a deployment will automatically happen up to "production".
+
+On "PR-creation" or also on "feature branch update", only specific steps of the pipeline should be executed (to be discussed).
+The idea behind this is to give developers a quick feedback, even before merging their stuff to the "main" branch (shift-left approach for DevSecOps).
+
+## CI/CD Implementation
+An example implementation for a CI/CD pipeline implemented in different CI/CD tools like GithubActions, CodeCatalyst Workflows, CircleCI, Jenkins, Gitlab, ...
+
+This is what we are aiming to implement - red steps are still under discussion:
+![Implementation pipeline](docs/diagrams/cicd_pipeline.png)
+
+## AWS Architecture for example project
+
+TBD
