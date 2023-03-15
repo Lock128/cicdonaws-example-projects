@@ -31,5 +31,6 @@ This is what we are aiming to implement - red steps are still under discussion:
 ![Implementation pipeline](docs/diagrams/cicd_pipeline.png)
 
 ## AWS Architecture for example project
-
-TBD
+![AWS Architecture](docs/diagrams/aws_architecture.png)
+The data shown and the UI can be defined by the one implementing this.
+The lambda function painted here is just an example - it could potentially generate an S3 PreSigned URL to download the "most up to date" version of the Flutter APK.
