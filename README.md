@@ -13,6 +13,17 @@ We assume "trunk based" development which means that developers will implement c
 On "PR-creation" or also on "feature branch update", only specific steps of the pipeline should be executed (to be discussed).
 The idea behind this is to give developers a quick feedback, even before merging their stuff to the "main" branch (shift-left approach for DevSecOps).
 
+## Technology choices
+### Infrastructure as Code
+We are going to use [AWS CDK](https://aws.amazon.com/cdk/) for Infrastructure as Code (IaC). The code will be written in Typescript.
+### Application Code
+The backend code (lambda functions) will be written, where required, in Typescript.
+The front-end code will be using Flutter - to allow cross-platform development - which means Dart.
+
+### Pipeline Code
+The code will be written in Typescript if it allows a language.
+Other than that we are dependend on the requirements of the CI/CD tool.
+
 ## CI/CD Implementation
 An example implementation for a CI/CD pipeline implemented in different CI/CD tools like GithubActions, CodeCatalyst Workflows, CircleCI, Jenkins, Gitlab, ...
 
