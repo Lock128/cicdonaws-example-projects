@@ -3,6 +3,8 @@
   "scripts": {
     "build": "npx projen build",
     "bundle": "npx projen bundle",
+    "bundle:functions\\hello_world.lambda": "npx projen bundle:functions\\hello_world.lambda",
+    "bundle:functions\\hello_world.lambda:watch": "npx projen bundle:functions\\hello_world.lambda:watch",
     "clobber": "npx projen clobber",
     "compile": "npx projen compile",
     "default": "npx projen default",

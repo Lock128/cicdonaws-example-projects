@@ -26,7 +26,30 @@
     },
     "bundle": {
       "name": "bundle",
-      "description": "Prepare assets"
+      "description": "Prepare assets",
+      "steps": [
+        {
+          "spawn": "bundle:functions\\hello_world.lambda"
+        }
+      ]
+    },
+    "bundle:functions\\hello_world.lambda": {
+      "name": "bundle:functions\\hello_world.lambda",
+      "description": "Create a JavaScript bundle from src/functions/hello_world.lambda.ts",
+      "steps": [
+        {
+          "exec": "esbuild --bundle src/functions/hello_world.lambda.ts --target=\"node14\" --platform=\"node\" --outfile=\"assets/functions\\hello_world.lambda/index.js\" --tsconfig=\"tsconfig.dev.json\" --external:aws-sdk"
+        }
+      ]
+    },
+    "bundle:functions\\hello_world.lambda:watch": {
+      "name": "bundle:functions\\hello_world.lambda:watch",
+      "description": "Continuously update the JavaScript bundle from src/functions/hello_world.lambda.ts",
+      "steps": [
+        {
+          "exec": "esbuild --bundle src/functions/hello_world.lambda.ts --target=\"node14\" --platform=\"node\" --outfile=\"assets/functions\\hello_world.lambda/index.js\" --tsconfig=\"tsconfig.dev.json\" --external:aws-sdk --watch"
+        }
+      ]
     },
     "clobber": {
       "name": "clobber",
@@ -120,6 +143,24 @@
       "steps": [
         {
           "exec": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src test build-tools .projenrc.js"
+        }
+      ]
+    },
+    "install": {
+      "name": "install",
+      "description": "Install project dependencies and update lockfile (non-frozen)",
+      "steps": [
+        {
+          "exec": "yarn install --check-files"
+        }
+      ]
+    },
+    "install:ci": {
+      "name": "install:ci",
+      "description": "Install project dependencies using frozen lockfile",
+      "steps": [
+        {
+          "exec": "yarn install --check-files --frozen-lockfile"
         }
       ]
     },

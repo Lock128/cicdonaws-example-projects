@@ -14,6 +14,7 @@
     ".projen/tasks.json",
     "cdk.json",
     "LICENSE",
+    "src/functions/hello_world-function.ts",
     "tsconfig.dev.json",
     "tsconfig.json"
   ],

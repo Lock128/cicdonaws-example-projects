@@ -50,3 +50,4 @@ junit.xml
 /cdk.out/
 .cdk.staging/
 .parcel-cache/
+!/src/functions/hello_world-function.ts
