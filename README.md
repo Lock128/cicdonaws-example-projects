@@ -17,6 +17,7 @@ The idea behind this is to give developers a quick feedback, even before merging
 ### Infrastructure as Code
 We are going to use [AWS CDK](https://aws.amazon.com/cdk/) for Infrastructure as Code (IaC). The code will be written in Typescript.
 ### Application Code
+We will use [Projen](https://github.com/projen/projen) for generating the baseline code.
 The backend code (lambda functions) will be written, where required, in Typescript.
 The front-end code will be using Flutter - to allow cross-platform development - which means Dart.
 
