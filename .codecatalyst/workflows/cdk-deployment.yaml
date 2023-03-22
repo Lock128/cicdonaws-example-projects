@@ -8,7 +8,7 @@ Triggers:
       - feature/2-initial-cdk-code
       - feature/2-initial-cdk-code      
     FilesChanged:
-      - "cdk-app/.*"      
+      - "cdk-app/.*"
 Actions:
   BuildAndTestCDKApp:
     Identifier: aws/build@v1
@@ -44,13 +44,12 @@ Actions:
         Configuration:
           Steps:
             - run: cd npm install
-            - run: cd npm run deploy cicdonaws-apidata-service --
-                --require-approval never
+            - run: cd npm run deploy cicdonaws-apidata-service -- --require-approval never
         Environment:
           Connections:
-            - Role: CodeCatalystPreviewDevelopmentAdministrator-rnxk91
-              Name: johannes-playground
-          Name: development     
+            - Role: CodeCatalystPreviewDevelopmentAdministrator-g5ghp1
+              Name: "215381813818"
+          Name: communitybuilders-dev
       DeployFrontend:
         Identifier: aws/github-actions-runner@v1
         Compute:
@@ -64,11 +63,9 @@ Actions:
         Configuration:
           Steps:
             - run: cd cdk-app; npm install
-            - run:
-                cd cdk-app; npm run deploy cicdonaws-frontend -- --require-approval
-                never
+            - run: cd cdk-app; npm run deploy cicdonaws-frontend -- --require-approval never
         Environment:
           Connections:
-            - Role: CodeCatalystPreviewDevelopmentAdministrator-rnxk91
-              Name: johannes-playground
-          Name: development
+            - Role: CodeCatalystPreviewDevelopmentAdministrator-g5ghp1
+              Name: "215381813818"
+          Name: communitybuilders-dev
