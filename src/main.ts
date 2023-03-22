@@ -10,7 +10,7 @@ export class CICDOnAWSStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {
     super(scope, id, props);
 
-    this.apiDataService = new APIDataService(this, 'apidata-service');
+    this.apiDataService = new APIDataService(this, 'cicdonaws-apidata-service');
     new FrontendStack(this, 'cicdonaws-frontend');
 
     // define resources here...
