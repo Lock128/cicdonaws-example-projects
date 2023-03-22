@@ -8,7 +8,7 @@ Triggers:
       - feature/2-initial-cdk-code
       - feature/2-initial-cdk-code      
     FilesChanged:
-      - "cdk-app/.*"
+      - ".*"
 Actions:
   BuildAndTestCDKApp:
     Identifier: aws/build@v1
