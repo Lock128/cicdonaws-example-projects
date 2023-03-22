@@ -56,7 +56,7 @@ export class APIDataService extends Construct {
   }
 
   private connectApiToDynamoDb() {
-    const matchesDataSource = this.api.addDynamoDbDataSource(
+    const matchesDataSource = this.graphqlApi.addDynamoDbDataSource(
       'matches-datasource',
       this.cicdonawsTable,
     );
