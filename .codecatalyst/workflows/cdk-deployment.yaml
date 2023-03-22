@@ -133,7 +133,6 @@ Actions:
     Configuration:
       Steps:
         - run: cd cdk-app; npm install
-        - run: cd cdk-app; npm run upload-testdata $MATCHES_TABLE $TEAMS_TABLE
     Environment:
       Connections:
         - Role: CodeCatalystPreviewDevelopmentAdministrator-rnxk91
