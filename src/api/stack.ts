@@ -1,53 +1,39 @@
 import { CfnOutput, Stack, StackProps, Tags } from 'aws-cdk-lib';
-import { EventBus } from 'aws-cdk-lib/aws-events';
 import { Construct } from 'constructs';
-import { SportsDataApi } from './api/construct';
+import { APIDataService } from './construct';
 
-export interface SportsDataServiceProps extends StackProps {
+export interface APIDataServiceProps extends StackProps {
   messageBusName: string;
 }
 
-export class SportsDataServiceStack extends Stack {
-  public readonly api: SportsDataApi;
-  constructor(scope: Construct, id: string, props: SportsDataServiceProps) {
+export class APIDataServiceStack extends Stack {
+  public readonly api: APIDataService;
+  constructor(scope: Construct, id: string, props: APIDataServiceProps) {
     super(scope, id, props);
     this.applyTagging();
 
-    const eventBus = EventBus.fromEventBusName(
-      this,
-      'message-bus',
-      props.messageBusName,
-    );
-
-    this.api = new SportsDataApi(this, 'api', {
-      eventBus,
-    });
-
-    new MatchReminder(this, 'match-reminder', {
-      eventBus: eventBus,
-    });
+    this.api = new APIDataService(this, 'cicdonaws-api');
 
     this.output();
   }
 
   private applyTagging() {
-    Tags.of(this).add('container', 'sports-data-service');
-    Tags.of(this).add('application', 'matchcenter');
-    Tags.of(this).add('project', 'football-match-center');
+    Tags.of(this).add('container', 'cicd');
+    Tags.of(this).add('application', 'cicdonaws');
+    Tags.of(this).add('project', 'cicdonaws-example-project');
   }
 
   private output() {
-    new CfnOutput(this, 'sportsDataService.teamsTableName', {
-      exportName: 'sportsDataService-teamsTableName',
-      value: this.api.teamsTable.tableName,
+    new CfnOutput(this, 'cicdonaws.teamsTableName', {
+      exportName: 'cicdonaws-table',
+      value: this.api.cicdonawsTable.tableName,
     });
-    new CfnOutput(this, 'sportsDataService.matchesTableName', {
-      value: this.api.matchesTable.tableName,
-    });
-    new CfnOutput(this, 'sportsDataService.apiURl', {
+    new CfnOutput(this, 'cicdonaws.apiURl', {
+      exportName: 'cicdonaws-apiURL',
       value: this.api.graphqlApi.graphqlUrl,
     });
-    new CfnOutput(this, 'sportsDataService.apiKey', {
+    new CfnOutput(this, 'cicdonaws.apiKey', {
+      exportName: 'cicdonaws-apiKey',
       value: this.api.graphqlApi.apiKey ? this.api.graphqlApi.apiKey : '',
     });
   }

@@ -1,6 +1,7 @@
 import { App, CfnOutput, Stack, StackProps, Tags } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { APIDataService } from './api/construct';
+import { FrontendStack } from './frontend/frontend-stack';
 
 
 export class CICDOnAWSStack extends Stack {
@@ -10,6 +11,7 @@ export class CICDOnAWSStack extends Stack {
     super(scope, id, props);
 
     this.apiDataService = new APIDataService(this, 'apidata-service');
+    new FrontendStack(this, 'cicdonaws-frontend');
 
     // define resources here...
     this.applyTagging();
@@ -23,11 +25,11 @@ export class CICDOnAWSStack extends Stack {
 
   private output() {
     new CfnOutput(this, 'apiDataService.apiURl', {
-      value: this.apiDataService.api.graphqlUrl,
+      value: this.apiDataService.graphqlApi.graphqlUrl,
     });
     new CfnOutput(this, 'apiDataService.apiKey', {
-      value: this.apiDataService.api.apiKey
-        ? this.apiDataService.api.apiKey
+      value: this.apiDataService.graphqlApi.apiKey
+        ? this.apiDataService.graphqlApi.apiKey
         : '',
     });
   }

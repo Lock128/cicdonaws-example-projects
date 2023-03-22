@@ -11,7 +11,7 @@ import { Construct } from 'constructs';
 
 export class APIDataService extends Construct {
   public readonly cicdonawsTable: dynamodb.Table;
-  public readonly api: appsync.GraphqlApi;
+  public readonly graphqlApi: appsync.GraphqlApi;
 
   constructor(scope: Construct, id: string) {
     super(scope, id);
@@ -26,7 +26,7 @@ export class APIDataService extends Construct {
 
     this.tableIndices();
 
-    this.api = new appsync.GraphqlApi(this, 'api', {
+    this.graphqlApi = new appsync.GraphqlApi(this, 'api', {
       name: Names.uniqueId(this),
       schema: appsync.SchemaFile.fromAsset(
         path.join(__dirname, 'api/schema.graphql'),

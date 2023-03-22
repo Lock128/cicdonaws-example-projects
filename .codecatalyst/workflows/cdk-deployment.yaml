@@ -19,11 +19,11 @@ Actions:
         Enabled: true
         ReportNamePrefix: rpt
         IncludePaths:
-          - ./cdk-app/coverage/lcov.info
+          - ./coverage/lcov.info
     Configuration:
       Steps:
-        - Run: cd cdk-app; npm install
-        - Run: cd cdk-app; npm run build
+        - Run: npm install
+        - Run: npm run build
     Compute:
       Type: Lambda
   DeployCDKApp:
@@ -42,37 +42,15 @@ Actions:
               Value: eu-central-1
         Configuration:
           Steps:
-            - run: cd cdk-app; npm install
-            - run: cd cdk-app; npm run deploy matchcenter-messaging-service --
+            - run: cd npm install
+            - run: cd npm run deploy cicdonaws-apidata-service --
                 --require-approval never
         Environment:
           Connections:
             - Role: CodeCatalystPreviewDevelopmentAdministrator-rnxk91
               Name: johannes-playground
-          Name: development
-      DeploySportsDataService:
-        Identifier: aws/github-actions-runner@v1
-        DependsOn:
-          - DeployMessagingService
-        Compute:
-          Type: EC2
-        Inputs:
-          Sources:
-            - WorkflowSource
-          Variables:
-            - Name: AWS_REGION
-              Value: eu-central-1
-        Configuration:
-          Steps:
-            - run: cd cdk-app; npm install
-            - run: cd cdk-app; npm run deploy matchcenter-sportsdata-service --
-                --require-approval never
-        Environment:
-          Connections:
-            - Role: CodeCatalystPreviewDevelopmentAdministrator-rnxk91
-              Name: johannes-playground
-          Name: development
-      DeployFrontendWeb:
+          Name: development     
+      DeployFrontend:
         Identifier: aws/github-actions-runner@v1
         Compute:
           Type: EC2
@@ -86,55 +64,10 @@ Actions:
           Steps:
             - run: cd cdk-app; npm install
             - run:
-                cd cdk-app; npm run deploy matchcenter-frontend-web -- --require-approval
+                cd cdk-app; npm run deploy cicdonaws-frontend -- --require-approval
                 never
         Environment:
           Connections:
             - Role: CodeCatalystPreviewDevelopmentAdministrator-rnxk91
               Name: johannes-playground
           Name: development
-      DeployFrontendAPK:
-        Identifier: aws/github-actions-runner@v1
-        Compute:
-          Type: EC2
-        Inputs:
-          Sources:
-            - WorkflowSource
-          Variables:
-            - Name: AWS_REGION
-              Value: eu-central-1
-        Configuration:
-          Steps:
-            - run: cd cdk-app; npm install
-            - run:
-                cd cdk-app; npm run deploy matchcenter-frontend-apk -- --require-approval
-                never
-        Environment:
-          Connections:
-            - Role: CodeCatalystPreviewDevelopmentAdministrator-rnxk91
-              Name: johannes-playground
-          Name: development
-  UploadTestData:
-    Identifier: aws/github-actions-runner@v1
-    DependsOn:
-      - DeployCDKApp
-    Compute:
-      Type: EC2
-    Inputs:
-      Sources:
-        - WorkflowSource
-      Variables:
-        - Name: AWS_REGION
-          Value: eu-central-1
-        - Name: MATCHES_TABLE
-          Value: matchcenter-sportsdata-service-apimatches06101027-LADXM1GYUUD2
-        - Name: TEAMS_TABLE
-          Value: matchcenter-sportsdata-service-apiteams14779389-108T9FCIIKZO5
-    Configuration:
-      Steps:
-        - run: cd cdk-app; npm install
-    Environment:
-      Connections:
-        - Role: CodeCatalystPreviewDevelopmentAdministrator-rnxk91
-          Name: johannes-playground
-      Name: development
