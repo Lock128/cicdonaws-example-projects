@@ -1,0 +1,8 @@
+{
+  "matches": $utils.toJson($ctx.result.items),
+  "nextToken": $util.toJson($ctx.result.nextToken)
+}
+
+#if($ctx.error)
+  $util.error($ctx.error.message, $ctx.error.type)
+#end

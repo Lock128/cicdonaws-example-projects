@@ -1,0 +1,13 @@
+{
+  "version": "2018-05-29",
+  "operation": "Query",
+  "query": {
+    "expression": "PK = :PK",
+    "expressionValues": {
+      ":PK": $util.dynamodb.toDynamoDBJson("COUNTRY#DE")
+    }
+  },
+  "limit": $util.toJson($ctx.args.count),
+  "nextToken": $util.toJson($ctx.args.nextToken)
+}
+

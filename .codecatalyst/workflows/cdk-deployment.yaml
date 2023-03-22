@@ -1,0 +1,141 @@
+Name: cdk-deployment
+RunMode: SUPERSEDED
+SchemaVersion: "1.0"
+Triggers:
+  - Type: PUSH
+    Branches:
+      - main
+      - feature/2-initial-cdk-code
+    FilesChanged:
+      - "cdk-app/.*"      
+Actions:
+  BuildAndTestCDKApp:
+    Identifier: aws/build@v1
+    Inputs:
+      Sources:
+        - WorkflowSource
+    Outputs:
+      AutoDiscoverReports:
+        Enabled: true
+        ReportNamePrefix: rpt
+        IncludePaths:
+          - ./cdk-app/coverage/lcov.info
+    Configuration:
+      Steps:
+        - Run: cd cdk-app; npm install
+        - Run: cd cdk-app; npm run build
+    Compute:
+      Type: Lambda
+  DeployCDKApp:
+    DependsOn:
+      - BuildAndTestCDKApp
+    Actions:
+      DeployMessagingService:
+        Identifier: aws/github-actions-runner@v1
+        Compute:
+          Type: EC2
+        Inputs:
+          Sources:
+            - WorkflowSource
+          Variables:
+            - Name: AWS_REGION
+              Value: eu-central-1
+        Configuration:
+          Steps:
+            - run: cd cdk-app; npm install
+            - run: cd cdk-app; npm run deploy matchcenter-messaging-service --
+                --require-approval never
+        Environment:
+          Connections:
+            - Role: CodeCatalystPreviewDevelopmentAdministrator-rnxk91
+              Name: johannes-playground
+          Name: development
+      DeploySportsDataService:
+        Identifier: aws/github-actions-runner@v1
+        DependsOn:
+          - DeployMessagingService
+        Compute:
+          Type: EC2
+        Inputs:
+          Sources:
+            - WorkflowSource
+          Variables:
+            - Name: AWS_REGION
+              Value: eu-central-1
+        Configuration:
+          Steps:
+            - run: cd cdk-app; npm install
+            - run: cd cdk-app; npm run deploy matchcenter-sportsdata-service --
+                --require-approval never
+        Environment:
+          Connections:
+            - Role: CodeCatalystPreviewDevelopmentAdministrator-rnxk91
+              Name: johannes-playground
+          Name: development
+      DeployFrontendWeb:
+        Identifier: aws/github-actions-runner@v1
+        Compute:
+          Type: EC2
+        Inputs:
+          Sources:
+            - WorkflowSource
+          Variables:
+            - Name: AWS_REGION
+              Value: eu-central-1
+        Configuration:
+          Steps:
+            - run: cd cdk-app; npm install
+            - run:
+                cd cdk-app; npm run deploy matchcenter-frontend-web -- --require-approval
+                never
+        Environment:
+          Connections:
+            - Role: CodeCatalystPreviewDevelopmentAdministrator-rnxk91
+              Name: johannes-playground
+          Name: development
+      DeployFrontendAPK:
+        Identifier: aws/github-actions-runner@v1
+        Compute:
+          Type: EC2
+        Inputs:
+          Sources:
+            - WorkflowSource
+          Variables:
+            - Name: AWS_REGION
+              Value: eu-central-1
+        Configuration:
+          Steps:
+            - run: cd cdk-app; npm install
+            - run:
+                cd cdk-app; npm run deploy matchcenter-frontend-apk -- --require-approval
+                never
+        Environment:
+          Connections:
+            - Role: CodeCatalystPreviewDevelopmentAdministrator-rnxk91
+              Name: johannes-playground
+          Name: development
+  UploadTestData:
+    Identifier: aws/github-actions-runner@v1
+    DependsOn:
+      - DeployCDKApp
+    Compute:
+      Type: EC2
+    Inputs:
+      Sources:
+        - WorkflowSource
+      Variables:
+        - Name: AWS_REGION
+          Value: eu-central-1
+        - Name: MATCHES_TABLE
+          Value: matchcenter-sportsdata-service-apimatches06101027-LADXM1GYUUD2
+        - Name: TEAMS_TABLE
+          Value: matchcenter-sportsdata-service-apiteams14779389-108T9FCIIKZO5
+    Configuration:
+      Steps:
+        - run: cd cdk-app; npm install
+        - run: cd cdk-app; npm run upload-testdata $MATCHES_TABLE $TEAMS_TABLE
+    Environment:
+      Connections:
+        - Role: CodeCatalystPreviewDevelopmentAdministrator-rnxk91
+          Name: johannes-playground
+      Name: development

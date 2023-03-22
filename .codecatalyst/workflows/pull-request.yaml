@@ -1,0 +1,75 @@
+Name: pull-request
+RunMode: SUPERSEDED
+SchemaVersion: "1.0"
+Triggers:
+  - Type: PULLREQUEST
+    Branches:
+      - main
+      - develop
+    Events:
+      - OPEN
+      - REVISION
+Actions:
+  BuildAndTestCDKApp:
+    Identifier: aws/build@v1
+    Inputs:
+      Sources:
+        - WorkflowSource
+    Outputs:
+      AutoDiscoverReports:
+        Enabled: true
+        ReportNamePrefix: rpt
+        IncludePaths:
+          - ./cdk-app/coverage/lcov.info
+    Configuration:
+      Steps:
+        - Run: cd cdk-app; npm install
+        - Run: cd cdk-app; npm run build
+    Compute:
+      Type: Lambda
+  BuildAndTestUI:
+    Identifier: aws/github-actions-runner@v1
+    Compute:
+      Type: EC2
+    Outputs:
+      Artifacts:
+        - Name: build
+          Files:
+            - ./ui/build/**/*
+      AutoDiscoverReports:
+        IncludePaths:
+          - coverage/**
+          - reports/**
+        Enabled: true
+        ReportNamePrefix: rpt
+    Inputs:
+      Sources:
+        - WorkflowSource
+    Configuration:
+      Steps:
+        - name: Flutter Build Web
+          uses: subosito/flutter-action@v2.8.0
+          with:
+            flutter-version: "3.7.1"
+            channel: "stable"
+        - name: Java Install
+          uses: actions/setup-java@v2
+          with:
+            distribution: "zulu"
+            java-version: "11"
+        - name: Setup Android SDK
+          uses: android-actions/setup-android@v2
+        - run: flutter --version
+        - run: git config --global --add safe.directory '*'
+        - run: flutter --version
+        - run: cd ui;flutter clean
+        - run: cd ui;flutter pub get
+        - run: cd ui;flutter precache --web
+        - run: cd ui;flutter test --coverage
+        - run: cd ui;flutter build web
+        - run: cd ui;flutter build apk
+    Environment:
+      Connections:
+        - Role: CodeCatalystPreviewDevelopmentAdministrator-rnxk91
+          Name: "johannes-playground"
+      Name: development

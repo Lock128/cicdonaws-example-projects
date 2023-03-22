@@ -1,0 +1,13 @@
+{
+  "version": "2018-05-29",
+  "operation": "Query",
+  "query": {
+    "expression": "Season = :Season",
+    "expressionValues": {
+      ":Season": $util.dynamodb.toDynamoDBJson($ctx.args.season)
+    }
+  },
+  "index": "matches-per-season",
+  "limit": $util.toJson($ctx.args.count),
+  "nextToken": $util.toJson($ctx.args.nextToken)
+}
