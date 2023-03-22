@@ -151,7 +151,7 @@
       "description": "Install project dependencies and update lockfile (non-frozen)",
       "steps": [
         {
-          "exec": "yarn install --check-files"
+          "exec": "npm install"
         }
       ]
     },
@@ -160,7 +160,7 @@
       "description": "Install project dependencies using frozen lockfile",
       "steps": [
         {
-          "exec": "yarn install --check-files --frozen-lockfile"
+          "exec": "npm ci"
         }
       ]
     },
@@ -233,7 +233,7 @@
       },
       "steps": [
         {
-          "exec": "yarn upgrade npm-check-updates"
+          "exec": "npm update npm-check-updates"
         },
         {
           "exec": "npm-check-updates --dep dev --upgrade --target=minor --reject='@aws-sdk/client-dynamodb'"
@@ -251,10 +251,10 @@
           "exec": "npm-check-updates --dep bundle --upgrade --target=minor --reject='@aws-sdk/client-dynamodb'"
         },
         {
-          "exec": "yarn install --check-files"
+          "exec": "npm install"
         },
         {
-          "exec": "yarn upgrade"
+          "exec": "npm update"
         },
         {
           "exec": "npx projen"

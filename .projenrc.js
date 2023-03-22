@@ -1,4 +1,4 @@
-const { awscdk } = require('projen');
+const { awscdk, javascript } = require('projen');
 const project = new awscdk.AwsCdkTypeScriptApp({
   cdkVersion: '2.61.0',
   defaultReleaseBranch: 'main',
@@ -6,6 +6,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   prettier: true,
   github: false,
   gitignore: ['outputs.json'],
+  packageManager: javascript.NodePackageManager.NPM,
   deps: [
     '@aws-sdk/client-dynamodb@3.264.0',
   ] /* Runtime dependencies of this module. */,
