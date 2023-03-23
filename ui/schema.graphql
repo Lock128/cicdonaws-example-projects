@@ -1,0 +1,44 @@
+﻿schema {
+  query: Query
+}
+
+type Match {
+  AwayTeamId: String!
+  AwayTeamName: String!
+  Date: AWSDate!
+  FTAG: Int
+  FTHG: Int
+  FTR: String
+  HTAG: Int
+  HTHG: Int
+  HTR: String
+  HomeTeamId: String!
+  HomeTeamName: String!
+  Matchday: Int!
+  PK: String!
+  SK: String!
+  Season: String!
+}
+
+type PaginatedMatches {
+  matches: [Match!]!
+  nextToken: String
+}
+
+type PaginatedTeams {
+  nextToken: String
+  teams: [Team!]!
+}
+
+type Query {
+  getMatchesByDate(count: Int, date: String!, nextToken: String): PaginatedMatches
+  getTeamsByCountry(count: Int, country: String!, nextToken: String): PaginatedTeams
+}
+
+type Team {
+  PK: String!
+  PrimaryColor: String!
+  SK: String!
+  SecondaryColor: String!
+  TeamName: String!
+}

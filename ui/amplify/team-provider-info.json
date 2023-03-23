@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-matchcenter-dev-12140-authRole",
+      "UnauthRoleArn": "arn:aws:iam::345856669986:role/amplify-matchcenter-dev-12140-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::345856669986:role/amplify-matchcenter-dev-12140-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-matchcenter-dev-12140-deployment",
+      "UnauthRoleName": "amplify-matchcenter-dev-12140-unauthRole",
+      "StackName": "amplify-matchcenter-dev-12140",
+      "StackId": "arn:aws:cloudformation:eu-central-1:345856669986:stack/amplify-matchcenter-dev-12140/65d2f3c0-a67d-11ed-8d7c-06039d140498",
+      "AmplifyAppId": "dmfs6e5bkz4z1"
+    }
+  }
+}

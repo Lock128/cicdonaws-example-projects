@@ -1,0 +1,35 @@
+# this is an auto generated file. This will be overwritten
+query GetMatchesByDate($count: Int, $date: String!, $nextToken: String) {
+  getMatchesByDate(count: $count, date: $date, nextToken: $nextToken) {
+    matches {
+      AwayTeamId
+      AwayTeamName
+      Date
+      FTAG
+      FTHG
+      FTR
+      HTAG
+      HTHG
+      HTR
+      HomeTeamId
+      HomeTeamName
+      Matchday
+      PK
+      SK
+      Season
+    }
+    nextToken
+  }
+}
+query GetTeamsByCountry($count: Int, $country: String!, $nextToken: String) {
+  getTeamsByCountry(count: $count, country: $country, nextToken: $nextToken) {
+    nextToken
+    teams {
+      PK
+      PrimaryColor
+      SK
+      SecondaryColor
+      TeamName
+    }
+  }
+}

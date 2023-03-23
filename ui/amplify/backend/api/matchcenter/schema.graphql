@@ -1,0 +1,44 @@
+schema {
+  query: Query
+}
+
+type Match @model @auth(rules: [{ allow: public, provider: apiKey }]) {
+  AwayTeamId: String!
+  AwayTeamName: String!
+  Date: AWSDate!
+  FTAGq: Int
+  FTHGq: Int
+  FTRq: String
+  HTAGq: Int
+  HTHGq: Int
+  HTRq: String
+  HomeTeamId: String!
+  HomeTeamName: String!
+  Matchday: Int!
+  PartitionKey: String!
+  SecondaryKey: String!
+  Season: String!
+}
+
+type PaginatedMatches @model @auth(rules: [{ allow: public, provider: apiKey }]) {
+  matches: [Match!]!
+  nextToken: String
+}
+
+type PaginatedTeams @model @auth(rules: [{ allow: public, provider: apiKey }]) {
+  nextToken: String
+  teams: [Team!]!
+}
+
+type Query {
+  getMatchesByDate(count: Int, date: String!, nextToken: String): PaginatedMatches
+  getTeamsByCountry(count: Int, country: String!, nextToken: String): PaginatedTeams
+}
+
+type Team @model @auth(rules: [{ allow: public, provider: apiKey }]) {
+  PartitionKey: String!
+  PrimaryColor: String!
+  SecondaryKey: String!
+  SecondaryColor: String!
+  TeamName: String!
+}
