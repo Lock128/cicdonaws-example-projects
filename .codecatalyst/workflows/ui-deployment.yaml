@@ -22,8 +22,8 @@ Actions:
           - ./cdk-app/coverage/lcov.info
     Configuration:
       Steps:
-        - Run: cd cdk-app; npm install
-        - Run: cd cdk-app; npm run build
+        - Run: npm install
+        - Run: npm run build
 
     Compute:
       Type: Lambda
@@ -90,88 +90,17 @@ Actions:
     Configuration:
       Steps:
         - Run: aws s3 ls
-        - Run: BUCKET_NAME=$(aws cloudformation describe-stacks --stack-name "matchcenter-frontend-web" --query "Stacks[0].Outputs[0].OutputValue" --region eu-central-1 --output text)
+        - Run: BUCKET_NAME=$(aws cloudformation describe-stacks --stack-name "cicdonaws-frontend" --query "Stacks[0].Outputs[0].OutputValue" --region eu-central-1 --output text)
         - Run: echo name=$BUCKET_NAME
         - Run: aws s3 sync $CATALYST_SOURCE_DIR_FlutterBuildResults/ui/build/web/.
             s3://$BUCKET_NAME
-        - Run: CLOUDFRONT_ID=$(aws cloudformation describe-stacks --stack-name "matchcenter-frontend-web" --query "Stacks[0].Outputs[1].OutputValue" --region eu-central-1 --output text)            
+        - Run: CLOUDFRONT_ID=$(aws cloudformation describe-stacks --stack-name "cicdonaws-frontend" --query "Stacks[0].Outputs[1].OutputValue" --region eu-central-1 --output text)            
         - Run: echo cloudfrontid=$CLOUDFRONT_ID
         - Run: aws cloudfront create-invalidation --distribution-id "$CLOUDFRONT_ID" --paths "/*"
     Compute:
       Type: Lambda
     DependsOn:
       - BuildAndTestUIWeb
-    Environment:
-      Connections:
-        - Role: CodeCatalystPreviewDevelopmentAdministrator-rnxk91
-          Name: johannes-playground
-      Name: development
-  BuildAndTestUIApk:
-    Identifier: aws/github-actions-runner@v1
-    Compute:
-      Type: EC2
-    Outputs:
-      Artifacts:
-        - Name: FlutterBuildResultsApk
-          Files:
-            - ./ui/**/*
-      AutoDiscoverReports:
-        IncludePaths:
-          - ./ui/coverage/**
-          - ./ui/coverage/lcov.info
-        Enabled: true
-        ReportNamePrefix: rpt
-    Inputs:
-      Sources:
-        - WorkflowSource
-    Configuration:
-      Steps:
-        - name: Flutter Build Web
-          uses: subosito/flutter-action@v2.8.0
-          with:
-            flutter-version: "3.7.1"
-            channel: "stable"
-        - name: Java Install
-          uses: actions/setup-java@v2
-          with:
-            distribution: "zulu"
-            java-version: "11"
-        - name: Setup Android SDK
-          uses: android-actions/setup-android@v2
-        - run: flutter --version
-        - run: git config --global --add safe.directory '*'
-        - run: flutter --version
-        - run: cd ui;flutter clean
-        - run: cd ui;flutter pub get
-        - run: cd ui;flutter build apk
-    Environment:
-      Connections:
-        - Role: CodeCatalystPreviewDevelopmentAdministrator-rnxk91
-          Name: "johannes-playground"
-      Name: development
-  UploadToS3Apk:
-    Identifier: aws/build@v1
-    Inputs:
-      Sources:
-        - WorkflowSource
-      Artifacts:
-        - FlutterBuildResultsApk
-    Outputs:
-      AutoDiscoverReports:
-        Enabled: true
-        ReportNamePrefix: rpt
-      Variables:
-        - BUCKET_NAME
-        - CLOUDFRONT_ID
-    Configuration:
-      Steps:
-        - Run: BUCKET_NAME=$(aws cloudformation describe-stacks --stack-name "matchcenter-frontend-apk" --query "Stacks[0].Outputs[0].OutputValue" --region eu-central-1 --output text)
-        - Run: echo name=$BUCKET_NAME
-        - Run: aws s3 sync $CATALYST_SOURCE_DIR_FlutterBuildResultsApk/ui/build/. s3://$BUCKET_NAME
-    Compute:
-      Type: Lambda
-    DependsOn:
-      - BuildAndTestUIApk
     Environment:
       Connections:
         - Role: CodeCatalystPreviewDevelopmentAdministrator-rnxk91
