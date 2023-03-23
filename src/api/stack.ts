@@ -2,14 +2,11 @@ import { CfnOutput, Stack, StackProps, Tags } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { APIDataService } from './construct';
 
-export interface APIDataServiceProps extends StackProps {
-  messageBusName: string;
-}
 
 export class APIDataServiceStack extends Stack {
   public readonly api: APIDataService;
-  constructor(scope: Construct, id: string, props: APIDataServiceProps) {
-    super(scope, id, props);
+  constructor(scope: Construct, id: string) {
+    super(scope, id);
     this.applyTagging();
 
     this.api = new APIDataService(this, 'cicdonaws-api');
