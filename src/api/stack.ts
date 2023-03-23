@@ -5,8 +5,8 @@ import { APIDataService } from './construct';
 
 export class APIDataServiceStack extends Stack {
   public readonly api: APIDataService;
-  constructor(scope: Construct, id: string) {
-    super(scope, id);
+  constructor(scope: Construct, id: string, props?: StackProps) {
+    super(scope, id, props);
     this.applyTagging();
 
     this.api = new APIDataService(this, 'cicdonaws-api');
