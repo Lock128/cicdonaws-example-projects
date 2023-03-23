@@ -62,6 +62,8 @@ Actions:
         - run: flutter --version
         - run: git config --global --add safe.directory '*'
         - run: flutter --version
+        - run: ls -al
+        - run: pwd
         - run: cd ui;flutter clean
         - run: cd ui;flutter pub get
         - run: cd ui;flutter precache --web

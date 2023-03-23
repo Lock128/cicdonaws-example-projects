@@ -6,7 +6,7 @@ Triggers:
     Branches:
       - main
       - feature/2-initial-cdk-code
-      - feature/2-initial-cdk-code      
+      - feature/2-initial-cdk-code
     FilesChanged:
       - ".*"
 Actions:
@@ -69,3 +69,17 @@ Actions:
             - Role: CodeCatalystPreviewDevelopmentAdministrator-g5ghp1
               Name: "215381813818"
           Name: communitybuilders-dev
+  AWSCDKbootstrap_01:
+    Identifier: aws/cdk-bootstrap@v1
+    Configuration:
+      Region: eu-central-1
+    Compute:
+      Type: Lambda
+    Environment:
+      Connections:
+        - Role: CodeCatalystPreviewDevelopmentAdministrator-g5ghp1
+          Name: "215381813818"
+      Name: communitybuilders-dev
+    Inputs:
+      Sources:
+        - WorkflowSource
