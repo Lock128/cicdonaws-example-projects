@@ -43,8 +43,8 @@ Actions:
               Value: eu-central-1
         Configuration:
           Steps:
-            - run: cd npm install
-            - run: cd npm run deploy cicdonaws-apidata-service -- --require-approval never
+            - run: npm install
+            - run: npm run deploy cicdonaws-apidata-service -- --require-approval never
         Environment:
           Connections:
             - Role: CodeCatalystPreviewDevelopmentAdministrator-g5ghp1
@@ -62,8 +62,8 @@ Actions:
               Value: eu-central-1
         Configuration:
           Steps:
-            - run: cd cdk-app; npm install
-            - run: cd cdk-app; npm run deploy cicdonaws-frontend -- --require-approval never
+            - run: npm install
+            - run: npm run deploy cicdonaws-frontend -- --require-approval never
         Environment:
           Connections:
             - Role: CodeCatalystPreviewDevelopmentAdministrator-g5ghp1
