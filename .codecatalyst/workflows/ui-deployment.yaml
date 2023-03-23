@@ -50,12 +50,12 @@ Actions:
         - name: Flutter Build Web
           uses: subosito/flutter-action@v2.8.0
           with:
-            flutter-version: "3.7.1"
-            channel: "stable"
+            flutter-version: 3.7.1
+            channel: stable
         - name: Java Install
           uses: actions/setup-java@v2
           with:
-            distribution: "zulu"
+            distribution: zulu
             java-version: "11"
         - name: Setup Android SDK
           uses: android-actions/setup-android@v2
@@ -69,9 +69,9 @@ Actions:
         - run: cd ui;flutter build web
     Environment:
       Connections:
-        - Role: CodeCatalystPreviewDevelopmentAdministrator-rnxk91
-          Name: "johannes-playground"
-      Name: development
+        - Role: CodeCatalystPreviewDevelopmentAdministrator-g5ghp1
+          Name: "215381813818"
+      Name: communitybuilders-dev
 
   UploadToS3:
     Identifier: aws/build@v1
@@ -90,19 +90,24 @@ Actions:
     Configuration:
       Steps:
         - Run: aws s3 ls
-        - Run: BUCKET_NAME=$(aws cloudformation describe-stacks --stack-name "cicdonaws-frontend" --query "Stacks[0].Outputs[0].OutputValue" --region eu-central-1 --output text)
+        - Run: BUCKET_NAME=$(aws cloudformation describe-stacks --stack-name
+            "cicdonaws-frontend" --query "Stacks[0].Outputs[0].OutputValue"
+            --region eu-central-1 --output text)
         - Run: echo name=$BUCKET_NAME
         - Run: aws s3 sync $CATALYST_SOURCE_DIR_FlutterBuildResults/ui/build/web/.
             s3://$BUCKET_NAME
-        - Run: CLOUDFRONT_ID=$(aws cloudformation describe-stacks --stack-name "cicdonaws-frontend" --query "Stacks[0].Outputs[1].OutputValue" --region eu-central-1 --output text)            
+        - Run: CLOUDFRONT_ID=$(aws cloudformation describe-stacks --stack-name
+            "cicdonaws-frontend" --query "Stacks[0].Outputs[1].OutputValue"
+            --region eu-central-1 --output text)
         - Run: echo cloudfrontid=$CLOUDFRONT_ID
-        - Run: aws cloudfront create-invalidation --distribution-id "$CLOUDFRONT_ID" --paths "/*"
+        - Run: aws cloudfront create-invalidation --distribution-id "$CLOUDFRONT_ID"
+            --paths "/*"
     Compute:
       Type: Lambda
     DependsOn:
       - BuildAndTestUIWeb
     Environment:
       Connections:
-        - Role: CodeCatalystPreviewDevelopmentAdministrator-rnxk91
-          Name: johannes-playground
-      Name: development
+        - Role: CodeCatalystPreviewDevelopmentAdministrator-g5ghp1
+          Name: "215381813818"
+      Name: communitybuilders-dev
