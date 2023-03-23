@@ -1,4 +1,4 @@
-import { App, CfnOutput, Stack, StackProps, Tags } from 'aws-cdk-lib';
+import { App } from 'aws-cdk-lib';
 import { APIDataServiceStack } from './api/stack';
 import { FrontendStack } from './frontend/frontend-stack';
 
