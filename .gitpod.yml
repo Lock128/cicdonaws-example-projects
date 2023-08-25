@@ -1,3 +1,13 @@
+image: gitpod/workspace-full
+
 tasks:
   - init: yarn install && yarn run build
     command: yarn run watch
+
+ports:
+  - port: 3000
+    visibility: private
+
+vscode:
+  extensions:
+    - ""
